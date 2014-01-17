@@ -70,6 +70,10 @@ class Collection(PymongoCollection):
           "register it to the connection." % (name, name))
 
     def find(self, *args, **kwargs):
+        if not "slave_okay" in kwargs:
+            kwargs["slave_okay"] = self.slave_okay
+        if not "read_preference" in kwargs:
+            kwargs["read_preference"] = self.read_preference
         return Cursor(self, *args, **kwargs)
     find.__doc__ = PymongoCollection.find.__doc__ + """
         added by mongokit::
